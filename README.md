@@ -23,14 +23,19 @@ o meglio ancora, evita di girare in locale perche' prende un sacco di spazio
 ./submit_gridpack_generation.sh 30000 50000 1nw DYJets_M50_LT_75to80 LT_cards/DYJets_M50_LT_75to80 1nw
 
 cmsenv #not before
-tar -xaf DYJets_M50_LT_75to80_tarball.tar.xz
+#create a directory
+mkdir 75_80
+#untar tje gridpack INSIDE this directory
+cd 75_80
+tar -xaf ../DYJets_M50_LT_75to80_tarball.tar.xz
 ./runcmsgrid.sh 10 123456 2 &> debug.log
 #clone the tool by Andrea Massironi to check that the phase space if well carved
+cd ..
 git clone git@github.com:GiuseppeFasanella/LatinoTreesLHE.git
 cd LatinoTreeLHE
 #compile it following the README
 ./ntupleMaker.exe fileLHE outputFileRoot
-./ntupleMaker.exe ../cmsgrid_final.lhe output.root
+./ntupleMaker.exe 75_80/cmsgrid_final.lhe output.root
 
 ###############################################
 Quick test: in the proc card switch off the extra jets and run interactively
